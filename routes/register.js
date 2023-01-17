@@ -47,8 +47,8 @@ registerRouter.post("/", checkNotAuthenticated, async (req, res, next) => {
     });
     //Create a profile for the new user
     await Profile.create({
-      starting_weight: startingWeight,
-      goal_weight: goalWeight,
+      starting_weight: starting_weight,
+      goal_weight: goal_weight,
       start_date: new Date(), //Does this actually work the way I want?
       max_chain: 0,
       user_id: newUserResults.id,
