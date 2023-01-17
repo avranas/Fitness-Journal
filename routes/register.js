@@ -19,19 +19,19 @@ registerRouter.post("/", checkNotAuthenticated, async (req, res, next) => {
   try {
     const username = req.body.username;
     const password = req.body.password;
-    const startingWeight = req.body.starting_weight;
-    const goalWeight = req.body.goal_weight;
+    const starting_weight = req.body.starting_weight;
+    const goal_weight = req.body.goal_weight;
     if (!username) {
       throw createHttpError(400, "Missing data in body: 'username'");
     }
     if (!password) {
       throw createHttpError(400, "Missing in data body: 'password'");
     }
-    if (!startingWeight) {
-      throw createHttpError(400, "Missing in data body: 'startingWeight'");
+    if (!starting_weight) {
+      throw createHttpError(400, "Missing in data body: 'starting_weight'");
     }
-    if (!goalWeight) {
-      throw createHttpError(400, "Missing in data body: 'goalWeight'");
+    if (!goal_weight) {
+      throw createHttpError(400, "Missing in data body: 'goal_weight'");
     }
     //First check to see if a user with that name already exists
     const result = await User.findOne({
