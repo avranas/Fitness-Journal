@@ -1,9 +1,9 @@
-const express = require('express');
-const bcrypt = require('bcrypt');
+const express = require("express");
+const bcrypt = require("bcrypt");
 const registerRouter = express.Router();
-const User = require('../db/models/Users.js')
-const {checkNotAuthenticated} = require('./authentication-check.js');
-const Profile = require('../db/models/Profiles.js');
+const User = require("../db/models/Users.js");
+const { checkNotAuthenticated } = require("./authentication-check.js");
+const Profile = require("../db/models/Profiles.js");
 const createHttpError = require("http-errors");
 
 /*
@@ -15,36 +15,48 @@ Example:
       "goal_weight": 168.6
    }
 */
-registerRouter.post('/', checkNotAuthenticated, async (req, res, next) => {
-   try {
-      const username = req.body.username;
-      const password = req.body.password;
-      const startingWeight = req.body.starting_weight;
-      const goalWeight = req.body.goal_weight;
-      //First check to see if a user with that name already exists
-      const result = await User.findOne({
-         where: {username: username}
-      });
-      if(result){
-         throw createHttpError(400, "A user with that name already exists");
-      }
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const newUserResults = await User.create({
-         username: username,
-         password: hashedPassword
-      });
-      //Create a profile for the new user
-      await Profile.create({
-         starting_weight: startingWeight,
-         goal_weight: goalWeight,
-         start_date: new Date(), //Does this actually work the way I want?
-         max_chain: 0,
-         user_id: newUserResults.id
-      });
-      res.status(200).send(`Created new user: ${username}`);
-   } catch (err) {
-      next(err);
-   }
+registerRouter.post("/", checkNotAuthenticated, async (req, res, next) => {
+  try {
+    const username = req.body.username;
+    const password = req.body.password;
+    const startingWeight = req.body.starting_weight;
+    const goalWeight = req.body.goal_weight;
+    if (!username) {
+      throw createHttpError(400, "Missing data in body: 'username'");
+    }
+    if (!password) {
+      throw createHttpError(400, "Missing in data body: 'password'");
+    }
+    if (!startingWeight) {
+      throw createHttpError(400, "Missing in data body: 'startingWeight'");
+    }
+    if (!goalWeight) {
+      throw createHttpError(400, "Missing in data body: 'goalWeight'");
+    }
+    //First check to see if a user with that name already exists
+    const result = await User.findOne({
+      where: { username: username },
+    });
+    if (result) {
+      throw createHttpError(400, "A user with that name already exists");
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUserResults = await User.create({
+      username: username,
+      password: hashedPassword,
+    });
+    //Create a profile for the new user
+    await Profile.create({
+      starting_weight: startingWeight,
+      goal_weight: goalWeight,
+      start_date: new Date(), //Does this actually work the way I want?
+      max_chain: 0,
+      user_id: newUserResults.id,
+    });
+    res.status(200).send(`Created new user: ${username}`);
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = registerRouter;
