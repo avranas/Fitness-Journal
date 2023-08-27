@@ -1,6 +1,6 @@
-# AVranas Daily Fitness Journal
+# Vranas Fitness Journal
 
-avranas-daily-fitness-journal is a project being developed for the final open-ended project in Codecademy's Back-End-Engineer path
+vranas-fitness-journal is a project being developed for the final open-ended project in Codecademy's Back-End-Engineer path
 
 It allows users to keep track of their fitness goals using daily journal entries, which keep track of their weight, caloric intake, protein intake, and any other notes that the user would like to record.
 
@@ -23,9 +23,11 @@ It allows users to keep track of their fitness goals using daily journal entries
 
 ## Technologies
 1. Node.js
-2. ExpressJS
-3. Postgres
+2. Express.js
+3. PostgreSQL
 4. Sequelize
-5. Cors
-6. Passport + bcrypt
-7. Mocha/Chai/Supertest
+5. Passport.js
+6. bcrypt
+7. Mocha
+8. Chai
+9. Supertest
